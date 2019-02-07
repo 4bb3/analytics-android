@@ -23,7 +23,8 @@ public class Analytics implements AnalyticsService {
         public static final String SWITCH_VIEW_TYPE_CARDS = "cards";
         public static final String SEARCH = "Search";
         public static final String OPEN_FOLDER = "Open folder";
-        public static final String ADD_POSITION_TO_CHECK = "New position";
+        public static final String ADD_POSITION_TO_CHECK = "Add position";
+        public static final String ADD_POSITION_TO_CHECK_IS_CUSTOM = "Is custom";
         public static final String ADD_POSITION_TO_CHECK_TYPE = "Type";
         public static final String ADD_POSITION_TO_CHECK_WEIGHT_TYPE = "Weight type";
         public static final String ADD_POSITION_TO_CHECK_FREE_PRICE = "Free Price";
@@ -89,7 +90,11 @@ public class Analytics implements AnalyticsService {
         public static final String BREADCRUMBS = "Breadcrumbs";
         public static final String CLEAR_RECEIPT = "Clear receipt";
         public static final String START_RECEIPT = "Start receipt";
+        public static final String START_RECEIPT_SUM = "Sum";
+        public static final String START_RECEIPT_POSITIONS = "Positions";
         public static final String COMPLETE_RECEIPT = "Complete receipt";
+        public static final String COMPLETE_RECEIPT_SUM = "Sum";
+        public static final String COMPLETE_RECEIPT_POSITIONS = "Positions";
 
         public static final String TAX_DEFAULT = "tax_default";
         public static final String PRINTER_MODE = "printer_mode";
@@ -171,7 +176,7 @@ public class Analytics implements AnalyticsService {
             JSONObject props = new JSONObject();
             props.put(Events.SWITCH_VIEW_TYPE, type);
 
-            sendMixpanelEmptyEvent(context, Events.LOGIN);
+            sendMixpanelEmptyEvent(context, Events.SWICH_VIEW);
         } catch (Exception e) {
             Log.d("MIXPANEL ERROR", e.getLocalizedMessage());
         }
@@ -180,7 +185,7 @@ public class Analytics implements AnalyticsService {
     @Override
     public void search() {
         try {
-            sendMixpanelEmptyEvent(context, Events.LOGIN);
+            sendMixpanelEmptyEvent(context, Events.SEARCH);
         } catch (Exception e) {
             Log.d("MIXPANEL ERROR", e.getLocalizedMessage());
         }
@@ -196,7 +201,7 @@ public class Analytics implements AnalyticsService {
     }
 
     @Override
-    public void newPosition(String type, String weightType, boolean isFreePrice, int tax, int price) {
+    public void newPosition(String type, String weightType, boolean isFreePrice, int tax, int price, boolean isCustom) {
         try {
             JSONObject props = new JSONObject();
             props.put(Events.ADD_POSITION_TO_CHECK_TYPE, type);
@@ -204,6 +209,7 @@ public class Analytics implements AnalyticsService {
             props.put(Events.ADD_POSITION_TO_CHECK_FREE_PRICE, isFreePrice);
             props.put(Events.ADD_POSITION_TO_CHECK_TAX, tax);
             props.put(Events.ADD_POSITION_TO_CHECK_PRICE, price);
+            props.put(Events.ADD_POSITION_TO_CHECK_IS_CUSTOM, isCustom);
 
             sendMixpanelEvent(context, Events.ADD_POSITION_TO_CHECK, props);
         } catch (Exception e) {
@@ -287,12 +293,13 @@ public class Analytics implements AnalyticsService {
     }
 
     @Override
-    public void payment(String paymentType) {
+    public void payment(String paymentType, int sum) {
         try {
             JSONObject props = new JSONObject();
-            props.put(Events.PAYMENT, paymentType);
+            props.put(Events.PAYMENT_TYPE, paymentType);
+            props.put(Events.PAYMENT_SUM, sum);
 
-            sendMixpanelEvent(context, Events.PAYMENT_TYPE, props);
+            sendMixpanelEvent(context, Events.PAYMENT, props);
         } catch (Exception e) {
             Log.d("MIXPANEL ERROR", e.getLocalizedMessage());
         }
@@ -436,6 +443,32 @@ public class Analytics implements AnalyticsService {
     public void clearReceipt() {
         try {
             sendMixpanelEmptyEvent(context, Events.CLEAR_RECEIPT);
+        } catch (Exception e) {
+            Log.d("MIXPANEL ERROR", e.getLocalizedMessage());
+        }
+    }
+
+    @Override
+    public void startReceipt(int positions, int sum) {
+        try {
+            JSONObject props = new JSONObject();
+            props.put(Events.START_RECEIPT_POSITIONS, positions);
+            props.put(Events.START_RECEIPT_SUM, sum);
+
+            sendMixpanelEvent(context, Events.START_RECEIPT, props);
+        } catch (Exception e) {
+            Log.d("MIXPANEL ERROR", e.getLocalizedMessage());
+        }
+    }
+
+    @Override
+    public void completeReceipt(int positions, int sum) {
+        try {
+            JSONObject props = new JSONObject();
+            props.put(Events.COMPLETE_RECEIPT_POSITIONS, positions);
+            props.put(Events.COMPLETE_RECEIPT_SUM, sum);
+
+            sendMixpanelEvent(context, Events.COMPLETE_RECEIPT, props);
         } catch (Exception e) {
             Log.d("MIXPANEL ERROR", e.getLocalizedMessage());
         }

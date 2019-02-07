@@ -15,7 +15,7 @@ public interface AnalyticsService {
 
     void openFolder();
 
-    void newPosition(String type, String weightType, boolean isFreePrice, int tax, int price);
+    void newPosition(String type, String weightType, boolean isFreePrice, int tax, int price, boolean isCustom);
 
     void customPosition(int price);
 
@@ -29,7 +29,7 @@ public interface AnalyticsService {
 
     void restoreReceipt(int numberOfHours);
 
-    void payment(String paymentType);
+    void payment(String paymentType, int sum);
 
     void banknote(String banknoteType, String screen);
 
@@ -56,4 +56,8 @@ public interface AnalyticsService {
     void breadcrumbs();
 
     void clearReceipt();
+
+    void startReceipt(int positions, int sum);
+
+    void completeReceipt(int positions, int sum);
 }
