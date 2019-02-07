@@ -126,6 +126,11 @@ public class Analytics implements AnalyticsService {
         mixpanel.registerSuperProperties(props);
     }
 
+    private void sendPeopleEvent(String id) {
+        MixpanelAPI mixpanel = MixpanelAPI.getInstance(context, MIXPANEL_TOKEN);
+        mixpanel.identify(id);
+    }
+
     @Override
     public void logIn() {
         try {
@@ -151,6 +156,8 @@ public class Analytics implements AnalyticsService {
             props.put(Events.BRANCH_ID, branchId);
 
             sendSuperPropsMixpanelEvent(context, props);
+            sendPeopleEvent(accountId + " " + branchId);
+
         } catch (Exception e) {
             Log.d("MIXPANEL ERROR", e.getLocalizedMessage());
         }
