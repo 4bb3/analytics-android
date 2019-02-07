@@ -90,7 +90,7 @@ public class Analytics implements AnalyticsService {
         public static final String CLEAR_RECEIPT = "Clear receipt";
         public static final String START_RECEIPT = "Start receipt";
         public static final String COMPLETE_RECEIPT = "Complete receipt";
-        
+
         public static final String TAX_DEFAULT = "tax_default";
         public static final String PRINTER_MODE = "printer_mode";
         public static final String CARD_MODE = "card_mode";
